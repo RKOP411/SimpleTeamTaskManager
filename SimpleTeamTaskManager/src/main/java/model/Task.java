@@ -24,6 +24,8 @@ public class Task {
     private int createdBy;
     private Timestamp createdAt;
     private User assignedUser;
+    private String note;
+    private int user_id;
 
     // Constructors
     public Task() {
@@ -114,11 +116,27 @@ public class Task {
         this.notes = notes;
     }
 
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
     public User getAssignedUser() {
         return assignedUser;
     }
 
     public void setAssignedUser(User assignedUser) {
         this.assignedUser = assignedUser;
+    }
+
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
     }
 }
