@@ -8,6 +8,8 @@ import model.TaskDAO;
 import model.Task;
 import model.TaskNote;
 import model.TaskNoteDAO;
+import model.User;
+import model.UserDAO;
 
 import java.util.List;
 import java.io.IOException;
@@ -35,7 +37,8 @@ public class TaskServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     private TaskDAO TaskDAO = new TaskDAO();
-    TaskNoteDAO TaskNoteDAO = new TaskNoteDAO();  // ← This is the TaskNoteDAO you created
+    private TaskNoteDAO TaskNoteDAO = new TaskNoteDAO();
+    private UserDAO UserDAO = new UserDAO();
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -46,6 +49,10 @@ public class TaskServlet extends HttpServlet {
         for (Task task : tasks) {
             List<TaskNote> notes = TaskNoteDAO.getNotesByTaskId(task.getId());
             task.setNotes(notes);
+
+            // Load assigned user
+            User assignedUser = UserDAO.getUserById(task.getAssignedTo());
+            task.setAssignedUser(assignedUser);  
         }
 
         // Send tasks to JSP

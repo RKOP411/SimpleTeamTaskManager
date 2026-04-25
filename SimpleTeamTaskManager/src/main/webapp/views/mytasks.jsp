@@ -17,6 +17,7 @@
                 <thead class="table-dark">
                     <tr>
                         <th>ID</th>
+                        <th>Employee Name</th>
                         <th>Task Name</th>
                         <th>Due Date</th>
                         <th>Status</th>
@@ -34,15 +35,21 @@
                                 if (task.getNotes() != null && !task.getNotes().isEmpty()) {
                                     noteText = task.getNotes().get(0).getNote();
                                 }
+                                String assignedName = task.getAssignedUser() != null ? task.getAssignedUser().getName() : "Unassigned";
+                                String assignedEmail = task.getAssignedUser() != null ? task.getAssignedUser().getEmail() : "N/A";
                     %>
                     <!-- Task Row -->
                     <tr>
                         <td><%= task.getId()%></td>
+                        <td>
+                            <i class="bi bi-person-circle"></i> <%= assignedName%>
+                            <small class="text-muted d-block"><%= assignedEmail%></small>
+                        </td>
                         <td><%= task.getTitle()%></td>
                         <td><%= task.getDueDate()%></td>
                         <td>
                             <span class="badge <%= task.getStatus().equals("complete") ? "bg-success" : task.getStatus().equals("in_progress") ? "bg-warning" : "bg-danger"%>">
-                                <%= task.getStatus().equals("complete") ? "Complete" : task.getStatus().equals("in_progress") ? "In Progress" : "Pending"%>
+                                <%= task.getStatus().equals("complete") ? " <i class='bi bi-check-circle'></i> Complete" : task.getStatus().equals("in_progress") ? " <i class='bi bi-hourglass-split'></i> In Progress" : "<i class='bi bi-x-circle'></i> Pending"%>
                             </span>
                         </td>
                         <td>

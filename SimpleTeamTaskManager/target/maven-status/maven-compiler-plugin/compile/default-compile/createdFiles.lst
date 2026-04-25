@@ -1,6 +1,8 @@
-controller\TaskServlet.class
 model\Task.class
 model\TaskNoteDAO.class
 model\TaskDAO.class
 model\DBConnection.class
+controller\TaskServlet.class
+model\User.class
 model\TaskNote.class
+model\UserDAO.class

@@ -11,6 +11,7 @@ package model;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
+import model.User;
 
 public class Task {
 
@@ -22,6 +23,7 @@ public class Task {
     private int assignedTo;
     private int createdBy;
     private Timestamp createdAt;
+    private User assignedUser;
 
     // Constructors
     public Task() {
@@ -110,5 +112,13 @@ public class Task {
 
     public void setNotes(List<TaskNote> notes) {
         this.notes = notes;
+    }
+
+    public User getAssignedUser() {
+        return assignedUser;
+    }
+
+    public void setAssignedUser(User assignedUser) {
+        this.assignedUser = assignedUser;
     }
 }
