@@ -16,7 +16,7 @@ public class TaskDAO {
     // Get tasks assigned to a specific user
     public List<Task> getTasksByUser(int userId) {
         List<Task> tasks = new ArrayList<>();
-        String sql = "SELECT * FROM tasks WHERE assigned_to = ? ORDER BY due_date ASC";
+        String sql = "SELECT * FROM tasks WHERE assigned_to = ? ORDER BY id ASC";
         
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -48,7 +48,7 @@ public class TaskDAO {
         List<Task> tasks = new ArrayList<>();
         String sql = "SELECT t.*, u.name as assignee_name FROM tasks t " +
                      "LEFT JOIN users u ON t.assigned_to = u.id " +
-                     "ORDER BY t.due_date ASC";
+                     "ORDER BY t.id ASC";
         
         try (Connection conn = DBConnection.getConnection();
              Statement stmt = conn.createStatement();

@@ -19,29 +19,19 @@ public class DBConnection {
     private static final String PASSWORD = "";
     private static Connection connection = null;
 
-        // Get database connection
-    public static Connection getConnection() {
-        if (connection == null) {
-            try {
-                // Load MySQL JDBC driver (optional for newer versions)
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                
-                // Create connection
-                connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-                System.out.println("Database connected successfully!");
-                
-            } catch (ClassNotFoundException e) {
-                System.err.println("MySQL JDBC Driver not found!");
-                e.printStackTrace();
-            } catch (SQLException e) {
-                System.err.println("Database connection failed!");
-                e.printStackTrace();
-            }
+    // Get database connection
+    public static Connection getConnection() throws SQLException {
+        try {
+            // Load MySQL JDBC driver (optional for newer versions)
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("MySQL JDBC Driver not found!", e);
         }
-        return connection;
+        //ALWAYS NEW CONNECTION
+        return DriverManager.getConnection(URL, USERNAME, PASSWORD);
     }
-    
-        // Close connection
+
+    // Close connection
     public static void closeConnection() {
         if (connection != null) {
             try {
