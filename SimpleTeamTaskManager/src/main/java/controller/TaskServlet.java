@@ -6,6 +6,9 @@ package controller;
 
 import model.TaskDAO;
 import model.Task;
+import model.TaskNote;
+import model.TaskNoteDAO;
+
 import java.util.List;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -31,15 +34,25 @@ public class TaskServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    private TaskDAO taskDAO = new TaskDAO();
+    private TaskDAO TaskDAO = new TaskDAO();
+    TaskNoteDAO TaskNoteDAO = new TaskNoteDAO();  // ← This is the TaskNoteDAO you created
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // Get all tasks from database
-        List<Task> tasks = taskDAO.getAllTasks();
+        List<Task> tasks = TaskDAO.getAllTasks();
+
+        // For each task, load its notes
+        for (Task task : tasks) {
+            List<TaskNote> notes = TaskNoteDAO.getNotesByTaskId(task.getId());
+            task.setNotes(notes);
+        }
 
         // Send tasks to JSP
         request.setAttribute("tasks", tasks);
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println(tasks.get(i));
+        }
         // Go to Task Page
         request.getRequestDispatcher("/views/mytasks.jsp")
                 .forward(request, response);

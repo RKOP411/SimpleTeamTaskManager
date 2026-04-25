@@ -7,6 +7,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>My Tasks - TaskFlow</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     </head>
     <body class="bg-light">
         <div class="container mt-4">
@@ -28,7 +29,13 @@
                         List<Task> tasks = (List<Task>) request.getAttribute("tasks");
                         if (tasks != null && !tasks.isEmpty()) {
                             for (Task task : tasks) {
+                                // Get the note for this task
+                                String noteText = "No notes available";
+                                if (task.getNotes() != null && !task.getNotes().isEmpty()) {
+                                    noteText = task.getNotes().get(0).getNote();
+                                }
                     %>
+                    <!-- Task Row -->
                     <tr>
                         <td><%= task.getId()%></td>
                         <td><%= task.getTitle()%></td>
@@ -39,7 +46,7 @@
                             </span>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#noteModal1">
+                            <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#noteModal<%= task.getId()%>">
                                 <i class="bi bi-chat-text"></i> View Note
                             </button>
                         </td>
@@ -52,54 +59,61 @@
                             </button>
                         </td>
                     </tr>
-                    <%
-                        }
-                    } else {
-                    %>
-                    <tr>
-                        <td colspan="5" class="text-center">No tasks found</td>
-                    </tr>
-                    <% }%>
+
+                    <!-- Note Modal  -->
+                <div class="modal fade" id="noteModal<%= task.getId()%>" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Task Note: <%= task.getTitle()%></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <strong>Task ID:</strong> <%= task.getId()%><br>
+                                <strong>Task Title:</strong> <%= task.getTitle()%><br>
+                                <strong>Due Date:</strong> <%= task.getDueDate()%><br>
+                                <strong>Status:</strong> <%= task.getStatus()%><br>
+                                <hr>
+
+                                <strong>Detail:</strong> <%= task.getDescription()%><br>
+                                <small class="text-muted">Note: <%= noteText%></small><br>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Note Modal  -->
+
+                <!-- END of LOOP-->
+                <%
+                    }
+                } else {
+                %>
+                <tr>
+                    <td colspan="6" class="text-center">No tasks found</td>
+                </tr>
+                <% }%>
                 </tbody>
             </table>
         </div>
-        <!-- Note Modal 1 -->
-        <div class="modal fade" id="noteModal1" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Task Note</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <strong>Task:</strong> Fix login bug<br>
-                        <strong>Note:</strong> Fixed null pointer exception in authentication service.
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        <script>
+                                function editTask(taskId) {
+                                    alert('Edit task ' + taskId + ' - Will connect to database');
+                                }
+
+                                function deleteTask(taskId) {
+                                    if (confirm('Are you sure you want to delete this task?')) {
+                                        alert('Delete task ' + taskId + ' - Will remove from database');
+                                    }
+                                }
+
+                                function saveTask() {
+                                    alert('Task saved - Will insert into database');
+                                }
+        </script>
     </body>
-    <script>
-        // JavaScript functions for task management
-        function editTask(taskId) {
-            alert('Edit task ' + taskId + ' - Will connect to database');
-            // Later: fetch task data and populate edit form
-        }
-
-        function deleteTask(taskId) {
-            if (confirm('Are you sure you want to delete this task?')) {
-                alert('Delete task ' + taskId + ' - Will remove from database');
-                // Later: send DELETE request to servlet
-            }
-        }
-
-        function saveTask() {
-            alert('Task saved - Will insert into database');
-            // Later: collect form data and send to servlet via AJAX
-            // Close modal and refresh table
-        }
-    </script>
 </html>
