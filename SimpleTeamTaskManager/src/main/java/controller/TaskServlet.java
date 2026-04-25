@@ -4,6 +4,9 @@
  */
 package controller;
 
+import model.TaskDAO;
+import model.Task;
+import java.util.List;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -28,12 +31,22 @@ public class TaskServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    private TaskDAO taskDAO = new TaskDAO();
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        // Get all tasks from database
+        List<Task> tasks = taskDAO.getAllTasks();
+
+        // Send tasks to JSP
+        request.setAttribute("tasks", tasks);
+        // Go to Task Page
         request.getRequestDispatcher("/views/mytasks.jsp")
-               .forward(request, response);
+                .forward(request, response);
+
     }
 
+    // Get all tasks from database
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
